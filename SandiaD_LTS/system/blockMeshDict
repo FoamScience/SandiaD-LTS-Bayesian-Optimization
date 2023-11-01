@@ -18,6 +18,8 @@ mergeType points;
 
 scale   0.001;
 
+#include "<system>/meshSettings"
+
 vertices
 (
    (0     0                    -100)   // 0
@@ -61,7 +63,6 @@ vertices
    (150   6.549142588235295     500)   // 24
 );
 
-res 3;
 zn1 #calc "4*$res";
 zn2 #calc "14*$res";
 xn1 #calc "1*$res";
