@@ -1,0 +1,106 @@
+problem:
+  name: FlameD
+  template_case: 'Sandia_LTS'
+  type: 'optimization'
+  models: auto
+  parameters:
+    turbulenceModel:
+      type: choice
+      value_type: str
+      values: ['laminar', 'kEpsilon', 'LaunderSharmaKE'] # default: k-epsilon
+      ordered: true
+    #chemistryMechanism:
+    #  type: choice
+    #  value_type: str
+    #  values: ['gri3'] # default: kEpsilon
+    #  ordered: true
+    combustionModel:
+      type: choice
+      value_type: str
+      values: ['EDC', 'EDM', 'none', 'laminar'] # default: EDC
+      ordered: true
+    meshResolution:
+      type: range
+      value_type: int
+      bounds: [2, 7] # default: 5
+      log_scale: false
+  file_copies:
+    turbulenceModel:
+      template: "/constant/turbulenceProperties"
+    #chemistryMechansim:
+    #  template: "/constant/thermophysicalProperties"
+  scopes:
+    "/system/blockMeshDict":
+      meshResolution: "res"
+    "/constant/combustionProperies":
+      combustionModel: "combustionModel"
+  objectives:
+    TemperatureMSE:
+      mode: 'shell'
+      command: ['pvpython', 'postprocess.py', '--T']
+      threshold: 5e-2
+      minimize: True
+      lower_is_better: True
+    VelocityMSE:
+      mode: 'shell'
+      command: ['pvpython', 'postprocess.py', '--U']
+      threshold: 5e-2
+      minimize: True
+      lower_is_better: True
+    CO2MSE:
+      mode: 'shell'
+      command: ['pvpython', 'postprocess.py', '--CO2']
+      threshold: 5e-2
+      minimize: True
+      lower_is_better: True
+    CH4MSE:
+      mode: 'shell'
+      command: ['pvpython', 'postprocess.py', '--CH4']
+      threshold: 5e-2
+      minimize: True
+      lower_is_better: True
+    ExecutionTime:
+      mode: 'shell'
+      command: ['awk', '/ExecutionTime/{a=$3} END{print(a)}', 'log.reactingFoam']
+      threshold: 5
+      minimize: True
+      lower_is_better: True
+    ContinuityErrors:
+      mode: 'shell'
+      command: ['awk', 'function abs(v) {return v < 0 ? -v : v} /continuity errors/{a=$15} END{print(abs(a))}', 'log.reactingFoam']
+      threshold: 1.0
+      minimize: True
+      lower_is_better: True
+
+meta:
+  case_subdirs_to_clone:
+    - "0orig"
+    - "data"
+    - "postprocess.py"
+    - "getImage.sh"
+    - "renderResults.py"
+    - "case.foam"
+  clone_destination: "./trials/"
+  case_run_mode: local
+  case_run_command: ['./Allrun']
+  n_trials: 40
+  n_parallel_trials: 2
+  ttl_trial: 12000
+  init_poll_wait: 2
+  poll_factor: 1.5
+  timeout: 48
+  use_saasbo: True
+  n_pareto_points: 25
+  stopping_strategy:
+    improvement_bar: 1e-4
+    min_trials: 30
+    window_size: 10
+
+visualize:
+  update_interval: 15
+  n_latest_trials: 3
+  zscore_bar: 15
+  n_figures: 3
+  figure_generator: ['echo', 'null']
+  host: '0.0.0.0'
+  port: 8888
