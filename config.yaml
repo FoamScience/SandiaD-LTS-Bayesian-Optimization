@@ -1,6 +1,6 @@
 problem:
   name: FlameD
-  template_case: 'Sandia_LTS'
+  template_case: 'SandiaD_LTS'
   type: 'optimization'
   models: auto
   parameters:
@@ -8,7 +8,7 @@ problem:
       type: choice
       value_type: str
       values: ['laminar', 'kEpsilon', 'LaunderSharmaKE'] # default: k-epsilon
-      ordered: true
+      is_ordered: true
     #chemistryMechanism:
     #  type: choice
     #  value_type: str
@@ -18,7 +18,7 @@ problem:
       type: choice
       value_type: str
       values: ['EDC', 'EDM', 'none', 'laminar'] # default: EDC
-      ordered: true
+      is_ordered: true
     meshResolution:
       type: range
       value_type: int
@@ -30,9 +30,9 @@ problem:
     #chemistryMechansim:
     #  template: "/constant/thermophysicalProperties"
   scopes:
-    "/system/blockMeshDict":
+    "/system/meshSettings":
       meshResolution: "res"
-    "/constant/combustionProperies":
+    "/constant/combustionProperties":
       combustionModel: "combustionModel"
   objectives:
     TemperatureMSE:
@@ -74,8 +74,9 @@ problem:
 
 meta:
   case_subdirs_to_clone:
-    - "0orig"
+    - "0.orig"
     - "data"
+    - "chemkin"
     - "postprocess.py"
     - "getImage.sh"
     - "renderResults.py"
