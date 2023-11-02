@@ -9,11 +9,16 @@ problem:
       value_type: str
       values: ['laminar', 'kEpsilon', 'LaunderSharmaKE'] # default: k-epsilon
       is_ordered: true
-    #chemistryMechanism:
-    #  type: choice
-    #  value_type: str
-    #  values: ['gri3'] # default: kEpsilon
-    #  ordered: true
+    chemistryMechanism:
+      type: choice
+      value_type: str
+      values: ['GRI3', 'DRM22'] # default: gri3
+      is_ordered: true
+    chemistryType:
+      type: choice
+      value_type: str
+      values: ['ode', 'EulerImplicit'] # default: ode
+      is_ordered: true
     combustionModel:
       type: choice
       value_type: str
@@ -27,8 +32,10 @@ problem:
   file_copies:
     turbulenceModel:
       template: "/constant/turbulenceProperties"
-    #chemistryMechansim:
-    #  template: "/constant/thermophysicalProperties"
+    chemistryMechanism:
+      template: "/chemkin/mechanismProperties"
+    chemistryType:
+      template: "/constant/chemistryProperties"
   scopes:
     "/system/meshSettings":
       meshResolution: "res"
@@ -37,25 +44,25 @@ problem:
   objectives:
     TemperatureMSE:
       mode: 'shell'
-      command: ['pvpython', 'postprocess.py', '--T']
+      command: ['pvpython', 'postprocess.py', '--T', '--decomposed']
       threshold: 5e-2
       minimize: True
       lower_is_better: True
     VelocityMSE:
       mode: 'shell'
-      command: ['pvpython', 'postprocess.py', '--U']
+      command: ['pvpython', 'postprocess.py', '--U', '--decomposed']
       threshold: 5e-2
       minimize: True
       lower_is_better: True
     CO2MSE:
       mode: 'shell'
-      command: ['pvpython', 'postprocess.py', '--CO2']
+      command: ['pvpython', 'postprocess.py', '--CO2', '--decomposed']
       threshold: 5e-2
       minimize: True
       lower_is_better: True
     CH4MSE:
       mode: 'shell'
-      command: ['pvpython', 'postprocess.py', '--CH4']
+      command: ['pvpython', 'postprocess.py', '--CH4', '--decomposed']
       threshold: 5e-2
       minimize: True
       lower_is_better: True
@@ -102,6 +109,7 @@ visualize:
   n_latest_trials: 3
   zscore_bar: 15
   n_figures: 3
-  figure_generator: ['echo', 'null']
+  graph_height: 400
+  figure_generator: ['./getImage.sh']
   host: '0.0.0.0'
   port: 8888
