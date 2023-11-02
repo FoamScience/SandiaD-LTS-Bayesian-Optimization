@@ -44,38 +44,38 @@ problem:
   objectives:
     TemperatureMSE:
       mode: 'shell'
-      command: ['pvpython', 'postprocess.py', '--T', '--decomposed']
+      command: "pvpython postprocess.py --T --decomposed"
       threshold: 5e-2
       minimize: True
       lower_is_better: True
     VelocityMSE:
       mode: 'shell'
-      command: ['pvpython', 'postprocess.py', '--U', '--decomposed']
+      command: "pvpython postprocess.py --U --decomposed"
       threshold: 5e-2
       minimize: True
       lower_is_better: True
     CO2MSE:
       mode: 'shell'
-      command: ['pvpython', 'postprocess.py', '--CO2', '--decomposed']
+      command: "pvpython postprocess.py --CO2 --decomposed"
       threshold: 5e-2
       minimize: True
       lower_is_better: True
     CH4MSE:
       mode: 'shell'
-      command: ['pvpython', 'postprocess.py', '--CH4', '--decomposed']
+      command: "pvpython postprocess.py --CH4 --decomposed"
       threshold: 5e-2
       minimize: True
       lower_is_better: True
     ExecutionTime:
       mode: 'shell'
-      command: ['awk', '/ExecutionTime/{a=$3} END{print(a)}', 'log.reactingFoam']
-      threshold: 5
+      command: "./getExecutionTime.sh"
+      threshold: 3000
       minimize: True
       lower_is_better: True
     ContinuityErrors:
       mode: 'shell'
-      command: ['awk', 'function abs(v) {return v < 0 ? -v : v} /continuity errors/{a=$15} END{print(abs(a))}', 'log.reactingFoam']
-      threshold: 1.0
+      command: "./getContinuityErrs.sh"
+      threshold: 1e-5
       minimize: True
       lower_is_better: True
 
@@ -86,6 +86,8 @@ meta:
     - "chemkin"
     - "postprocess.py"
     - "getImage.sh"
+    - "getExecutionTime.sh"
+    - "getContinuityErrs.sh"
     - "renderResults.py"
     - "case.foam"
   clone_destination: "./trials/"
