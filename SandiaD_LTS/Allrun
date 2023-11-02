@@ -10,7 +10,7 @@ set -e
 restore0Dir
 
 runApplication chemkinToFoam \
-    chemkin/grimech30.dat chemkin/thermo30.dat chemkin/transportProperties \
+    chemkin/mechanismProperties chemkin/thermo30.dat chemkin/transportProperties \
     constant/reactionsGRI constant/thermo.compressibleGasGRI
 
 runApplication blockMesh
