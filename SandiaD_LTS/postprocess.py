@@ -17,6 +17,11 @@ parser.add_argument('--U', action='store_true', help='compare U data')
 parser.add_argument('--decomposed', action='store_true', help='case is decomposed')
 args = parser.parse_args()
 
+if  os.path.isfile(f"{os.getcwd()}/FAILED"):
+    """If the case failed, punish the objective and exit"""
+    print("500000")
+    exit()
+
 def compare(x, y, xExp, yExp):
     yInterp = np.interp(xExp, x, y)
     yInterpNorm = yInterp/yInterp.max()
@@ -51,7 +56,6 @@ df['CH4'] = vtk_to_numpy(data.GetPointData().GetArray('CH4'))
 df['T'] = vtk_to_numpy(data.GetPointData().GetArray('T'))
 U = vtk_to_numpy(data.GetPointData().GetArray('U'))
 df['U'] = np.sqrt(U[:,0]**2 + U[:,1]**2 + U[:,2]**2)
-
 
 if args.CO2:
     expDf = pd.read_csv(f"{os.getcwd()}/data/co2.csv")
