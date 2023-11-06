@@ -18,7 +18,7 @@ parser.add_argument('--decomposed', action='store_true', help='case is decompose
 args = parser.parse_args()
 
 if  os.path.isfile(f"{os.getcwd()}/FAILED"):
-    """If the case failed, punish the objective and exit"""
+    """If the case failed, penalize the objective and exit"""
     print("500000")
     exit()
 

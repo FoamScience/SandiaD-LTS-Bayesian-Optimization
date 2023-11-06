@@ -32,7 +32,7 @@ runApplication decomposePar
 set +e
 runParallel $(getApplication)
 if [ $? -ne 0 ]; then
-    echo "Solver $(getApplication) failed, objectives will be punished for this trial"
+    echo "Solver $(getApplication) failed, objectives will be penalized for this trial"
     touch FAILED
     exit 0
 fi
@@ -45,7 +45,7 @@ foamDictionary constant/chemistryProperties -entry chemistry -set on
 set +e
 runParallel -a $(getApplication)
 if [ $? -ne 0 ]; then
-    echo "Solver $(getApplication) failed, objectives will be punished for this trial"
+    echo "Solver $(getApplication) failed, objectives will be penalized for this trial"
     touch FAILED
     exit 0
 fi

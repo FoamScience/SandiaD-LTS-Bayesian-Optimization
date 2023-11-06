@@ -19,7 +19,7 @@ chemistryType
     solver          EulerImplicit;
 }
 
-chemistry       on;
+chemistry       off;
 
 initialChemicalTimeStep 1e-07;
 
