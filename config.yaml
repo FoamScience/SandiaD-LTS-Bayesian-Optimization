@@ -24,6 +24,11 @@ problem:
       value_type: str
       values: ['EDC', 'EDM', 'none', 'laminar'] # default: EDC
       is_ordered: true
+    mixtureModel:
+      type: choice
+      value_type: str
+      values: ['reactingMixture', 'singleStepReactingMixture'] # default: reactingMixture
+      is_ordered: true
     meshResolution:
       type: range
       value_type: int
@@ -41,6 +46,8 @@ problem:
       meshResolution: "res"
     "/constant/combustionProperties":
       combustionModel: "combustionModel"
+    "/constant/thermophysicalProperties":
+      mixtureModel: "thermoType.mixture"
   objectives:
     TemperatureMSE:
       mode: 'shell'
@@ -93,7 +100,7 @@ meta:
   clone_destination: "./trials/"
   case_run_mode: local
   case_run_command: ['./Allrun']
-  n_trials: 40
+  n_trials: 60
   n_parallel_trials: 2
   ttl_trial: 12000
   init_poll_wait: 2
