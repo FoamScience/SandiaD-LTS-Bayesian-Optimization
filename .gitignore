@@ -4,3 +4,4 @@ outputs
 *csv
 *png
 *imageUrl
+**/node_modules/**
