@@ -1,0 +1,15 @@
+{
+  "name": "sandia-d-lts-bayesian-optimization",
+  "description": "Optimize computation of Sandia's Flame D with Bayesian optimization algorithms",
+  "author": "Mohammed Elwardi Fadeli",
+  "html-inject-meta": {
+    "name": "Optimization of combustion processes with Bayesian algorithms",
+    "description": "NHR4CES Machine Learning for combustion workshop, November 2023",
+    "url": "http://foamscience.github.io/SandiaD-LTS-Bayesian-Optimization/",
+    "author": "Mohammed Elwardi Fadeli",
+    "image": "http://foamscience.github.io/SandiaD-LTS-Bayesian-Optimization/thumbnail.png"
+  },
+  "dependencies": {
+    "html-inject-meta": "^3.0.0"
+  }
+}
