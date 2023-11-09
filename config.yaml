@@ -1,5 +1,5 @@
 problem:
-  name: FlameD
+  name: SandiaFlameD
   template_case: 'SandiaD_LTS'
   type: 'optimization'
   models: auto
@@ -22,17 +22,12 @@ problem:
     combustionModel:
       type: choice
       value_type: str
-      values: ['EDC', 'EDM', 'none', 'laminar'] # default: EDC
-      is_ordered: true
-    mixtureModel:
-      type: choice
-      value_type: str
-      values: ['reactingMixture', 'singleStepReactingMixture'] # default: reactingMixture
+      values: ['EDC', 'none', 'laminar'] # default: EDC
       is_ordered: true
     meshResolution:
       type: range
       value_type: int
-      bounds: [2, 7] # default: 5
+      bounds: [3, 7] # default: 5
       log_scale: false
   file_copies:
     turbulenceModel:
@@ -46,30 +41,28 @@ problem:
       meshResolution: "res"
     "/constant/combustionProperties":
       combustionModel: "combustionModel"
-    "/constant/thermophysicalProperties":
-      mixtureModel: "thermoType.mixture"
   objectives:
     TemperatureMSE:
       mode: 'shell'
-      command: "pvpython postprocess.py --T --decomposed"
+      command: "/opt/paraviewopenfoam510/bin/pvpython postprocess.py --T --decomposed"
       threshold: 5e-2
       minimize: True
       lower_is_better: True
     VelocityMSE:
       mode: 'shell'
-      command: "pvpython postprocess.py --U --decomposed"
+      command: "/opt/paraviewopenfoam510/bin/pvpython postprocess.py --U --decomposed"
       threshold: 5e-2
       minimize: True
       lower_is_better: True
     CO2MSE:
       mode: 'shell'
-      command: "pvpython postprocess.py --CO2 --decomposed"
+      command: "/opt/paraviewopenfoam510/bin/pvpython postprocess.py --CO2 --decomposed"
       threshold: 5e-2
       minimize: True
       lower_is_better: True
     CH4MSE:
       mode: 'shell'
-      command: "pvpython postprocess.py --CH4 --decomposed"
+      command: "/opt/paraviewopenfoam510/bin/pvpython postprocess.py --CH4 --decomposed"
       threshold: 5e-2
       minimize: True
       lower_is_better: True
@@ -100,14 +93,14 @@ meta:
   clone_destination: "./trials/"
   case_run_mode: local
   case_run_command: ['./Allrun']
-  n_trials: 60
+  n_trials: 50
   n_parallel_trials: 2
   ttl_trial: 12000
-  init_poll_wait: 2
+  init_poll_wait: 80
   poll_factor: 1.5
   timeout: 48
   use_saasbo: True
-  n_pareto_points: 25
+  n_pareto_points: 20
   stopping_strategy:
     improvement_bar: 1e-4
     min_trials: 30

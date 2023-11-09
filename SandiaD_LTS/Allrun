@@ -30,7 +30,7 @@ foamDictionary constant/chemistryProperties -entry chemistry -set off
 #foamDictionary -entry refineInterval -set "$refineInterval" constant/dynamicMeshDict
 runApplication decomposePar
 set +e
-runParallel $(getApplication)
+mpirun -np 5 $(getApplication) -parallel > log.$(getApplication)
 if [ $? -ne 0 ]; then
     echo "Solver $(getApplication) failed, objectives will be penalized for this trial"
     touch FAILED

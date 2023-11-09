@@ -19,7 +19,7 @@ args = parser.parse_args()
 
 if  os.path.isfile(f"{os.getcwd()}/FAILED"):
     """If the case failed, penalize the objective and exit"""
-    print("500000")
+    print("1")
     exit()
 
 def compare(x, y, xExp, yExp):
@@ -46,26 +46,29 @@ plotOverLine1.Point1 = [0.0, 0.0, -0.1]
 plotOverLine1.Point2 = [0.0, 0.0, 0.5]
 UpdatePipeline(time=5000.0, proxy=plotOverLine1)
 
-# fetch data from pipeline
-D = 7.2e-3
-data = servermanager.Fetch(plotOverLine1)
-df = pd.DataFrame(columns=['x/D', 'CO2'])
-df['x/D'] = vtk_to_numpy(data.GetPointData().GetArray('arc_length'))/D
-df['CO2'] = vtk_to_numpy(data.GetPointData().GetArray('CO2'))
-df['CH4'] = vtk_to_numpy(data.GetPointData().GetArray('CH4'))
-df['T'] = vtk_to_numpy(data.GetPointData().GetArray('T'))
-U = vtk_to_numpy(data.GetPointData().GetArray('U'))
-df['U'] = np.sqrt(U[:,0]**2 + U[:,1]**2 + U[:,2]**2)
-
-if args.CO2:
-    expDf = pd.read_csv(f"{os.getcwd()}/data/co2.csv")
-    print(f"{compare(df['x/D'], df['CO2'], expDf['x/D'], expDf['CO2']):.3e}")
-if args.CH4:
-    expDf = pd.read_csv(f"{os.getcwd()}/data/ch4.csv")
-    print(f"{compare(df['x/D'], df['CH4'], expDf['x/D'], expDf['CH4']):.3e}")
-if args.T:
-    expDf = pd.read_csv(f"{os.getcwd()}/data/T.csv")
-    print(f"{compare(df['x/D'], df['T'], expDf['x/D'], expDf['T']):.3e}")
-if args.U:
-    expDf = pd.read_csv(f"{os.getcwd()}/data/U.csv")
-    print(f"{compare(df['x/D'], df['U'], expDf['x/D'], expDf['U']):.3e}")
+try:
+    # fetch data from pipeline
+    D = 7.2e-3
+    data = servermanager.Fetch(plotOverLine1)
+    df = pd.DataFrame(columns=['x/D', 'CO2'])
+    df['x/D'] = vtk_to_numpy(data.GetPointData().GetArray('arc_length'))/D
+    df['CO2'] = vtk_to_numpy(data.GetPointData().GetArray('CO2'))
+    df['CH4'] = vtk_to_numpy(data.GetPointData().GetArray('CH4'))
+    df['T'] = vtk_to_numpy(data.GetPointData().GetArray('T'))
+    U = vtk_to_numpy(data.GetPointData().GetArray('U'))
+    df['U'] = np.sqrt(U[:,0]**2 + U[:,1]**2 + U[:,2]**2)
+    
+    if args.CO2:
+        expDf = pd.read_csv(f"{os.getcwd()}/data/co2.csv")
+        print(f"{compare(df['x/D'], df['CO2'], expDf['x/D'], expDf['CO2']):.3e}")
+    if args.CH4:
+        expDf = pd.read_csv(f"{os.getcwd()}/data/ch4.csv")
+        print(f"{compare(df['x/D'], df['CH4'], expDf['x/D'], expDf['CH4']):.3e}")
+    if args.T:
+        expDf = pd.read_csv(f"{os.getcwd()}/data/T.csv")
+        print(f"{compare(df['x/D'], df['T'], expDf['x/D'], expDf['T']):.3e}")
+    if args.U:
+        expDf = pd.read_csv(f"{os.getcwd()}/data/U.csv")
+        print(f"{compare(df['x/D'], df['U'], expDf['x/D'], expDf['U']):.3e}")
+except:
+    print("1")
