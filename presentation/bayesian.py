@@ -5,6 +5,7 @@ from numpy.random import RandomState
 from bayes_opt import BayesianOptimization
 from bayes_opt import UtilityFunction
 import numpy as np
+import pandas as pd
 
 rng = RandomState(0)
 MAIN_COLOR = Colors.teal_a.value
@@ -18,6 +19,7 @@ small_size = 16
 mid_size = 20
 big_size = 25
 N = 6
+CASE_NAME="SandiaFlameD"
 Text.set_default(font="Comic Code Ligatures", color=TEXT_COLOR, font_size=small_size)
 Tex.set_default(color=TEXT_COLOR, font_size=small_size)
 Dot.set_default(radius=0.07, color=DOT_COLOR)
@@ -33,8 +35,6 @@ def F1(x,k,m,lb):
 
 def keep_only_objects(slide, grp):
     slide.clear()
-    if len(slide.mobjects) == len(grp):
-        return
     for _ in grp:
         slide.add(_)
 
@@ -199,7 +199,7 @@ class Bayes(Slide):
         self.play(AnimationGroup(*anims))
         self.next_slide()
 
-        ev = Text(r"4.1. Most offspings get evaluated 'as-is'", font_size=small_size).next_to(grid, DOWN)
+        ev = Text(r"4.1. Most offsprings get evaluated 'as-is'", font_size=small_size).next_to(grid, DOWN)
         self.play(FadeIn(ev))
         self.wait(2)
         self.play(FadeOut(ev))
@@ -321,9 +321,9 @@ class Bayes(Slide):
 
         sample = [e[0] for e in xx]# [xx[0][0], xx[1][0]]
         sample_dots = [Dot(color=DOT_COLOR).move_to(grid.c2p(e, 0)) for e in sample]
-        self.add(*sample_dots)
-
+        self.play(*[Create(d) for d in sample_dots])
         self.next_slide()  # Waits user to press continue to go to the next slide
+
         ev = Text(r"1. Evaluate objective functions", font_size=small_size).next_to(grid, DOWN)
         self.play(FadeIn(ev))
         self.wait(2)
@@ -332,8 +332,8 @@ class Bayes(Slide):
         sample_f = [-obj_func(e) for e in sample]
         anims = [sample_dots[i].animate.move_to(grid.c2p(sample[i], sample_f[i])) for i in range(len(sample))]
         self.play(AnimationGroup(*anims))
-
         self.next_slide()  # Waits user to press continue to go to the next slide
+
         ev = Text(r"2.1 Fit a Gaussian process model", font_size=small_size).next_to(grid, DOWN)
         self.play(FadeIn(ev))
         self.wait(2)
@@ -372,7 +372,7 @@ class Bayes(Slide):
         self.play(FadeOut(ev))
         self.remove(ev)
 
-        ei = grid.plot(lambda x: 100+10*acq_function.utility([[x]], optimizer._gp, 0)[0], color=ORANGE)
+        ei = grid.plot(lambda x: 100-10*acq_function.utility([[x]], optimizer._gp, 0)[0], color=ORANGE)
         self.play(FadeOut(ce1))
         ei_area = grid.get_area(ei, x_range=(-200, 200), opacity=0.3, color=[ORANGE, ORANGE])
         self.play(FadeIn(ei_area))
@@ -411,7 +411,7 @@ class Bayes(Slide):
                 ce12 = grid.plot(lambda x: confidence(optimizer, xx, yy, x, -1.96), color=ORANGE)
                 ce1 = grid.get_area(ce11, bounded_graph=ce12, opacity=0.5, x_range=(-200, 200))
                 self.play(DrawBorderThenFill(ce1))
-                ei = grid.plot(lambda x: 100+10*acq_function.utility([[x]], optimizer._gp, 0)[0], color=ORANGE)
+                ei = grid.plot(lambda x: 100-10*acq_function.utility([[x]], optimizer._gp, 0)[0], color=ORANGE)
                 self.play(FadeOut(ce1))
                 ei_area = grid.get_area(ei, x_range=(-200, 200), opacity=0.3, color=[ORANGE, ORANGE])
                 self.play(FadeIn(ei_area))
@@ -438,7 +438,7 @@ class Bayes(Slide):
                     ce1 = grid.get_area(ce11, bounded_graph=ce12, opacity=0.5, x_range=(-200, 200))
                     self.play(DrawBorderThenFill(ce1))
                     self.next_slide()
-                    ei = grid.plot(lambda x: 100+10*acq_function.utility([[x]], optimizer._gp, 0)[0], color=ORANGE)
+                    ei = grid.plot(lambda x: 100-10*acq_function.utility([[x]], optimizer._gp, 0)[0], color=ORANGE)
                     self.play(FadeOut(ce1))
                     ei_area = grid.get_area(ei, x_range=(-200, 200), opacity=0.3, color=[ORANGE, ORANGE])
                     self.play(FadeIn(ei_area))
@@ -567,7 +567,7 @@ class Bayes(Slide):
 
         items = [
             "Which parameters matter the most?",
-            "When changing from pareto points",
+            "What parameters affect which objectives?",
         ]
         last = self.itemize(items, cons, 1.5, True,
             t2w={f"1{ITEM_ICON}": BOLD, f"2{ITEM_ICON}": BOLD, f"3{ITEM_ICON}": BOLD, f"4{ITEM_ICON}": BOLD, "the Most": BOLD},
@@ -629,7 +629,7 @@ class Bayes(Slide):
         items = [
             "Based on ax-platform",
             "No-code, configuration based",
-            "Automatically picks most settings"
+            "Automatically picks most settings",
             "Run trials locally or on SLURM clusters",
             "Online visualization, you choose how!",
         ]
@@ -728,9 +728,10 @@ class Bayes(Slide):
             "Turbulence: laminar, kEpsilon, LaunderSharmaKE",
             "Chemistry Mechansim: GRI3, DRM22",
             "Chemistry Type: ODE, EulerImplicit",
-            "Combustion: EDC, EDM, none, laminar",
+            #"Combustion: EDC, EDM, none, laminar",
+            "Combustion: EDC, none, laminar",
             "Mesh resolution: [2->7] (default: 5)",
-            "mixtureModel: reactingMixture, singleStepRM",
+            #"mixture: reactingMixture, singleStepReactingMixure",
         ]
         last = self.itemize(items, cons, 1.5, True,
             t2w={f"1{ITEM_ICON}": BOLD, f"2{ITEM_ICON}": BOLD, f"3{ITEM_ICON}": BOLD, f"4{ITEM_ICON}": BOLD, f"5{ITEM_ICON}": BOLD, f"6{ITEM_ICON}": BOLD},
@@ -767,6 +768,8 @@ class Bayes(Slide):
         indents = [0, 0.5, 0.5, 0.5, 0.5]
         last = self.hi_yaml(items, indents, cons, 1)
 
+        self.next_slide()
+
         cons = Text("- Substitue Parameters", font_size=mid_size).next_to(cons, RIGHT*8)
         self.play(Create(cons))
 
@@ -781,20 +784,183 @@ class Bayes(Slide):
         self.next_slide()
         keep_only_objects(self, layout)
 
+        ### SECTION OBJECTIVES
+
+        flame = ImageMobject("./images/flame.png")#.to_edge(UP+RIGHT)
+        self.play(FadeIn(flame))
+
+        self.next_slide()
+        keep_only_objects(self, layout)
+        df1 = pd.read_csv(f"../{CASE_NAME}_report.csv")
+        df = df1[~df1.isin([1.0]).any(axis=1)]
+
+        maxMSE = df[['CO2MSE', 'CH4MSE', 'TemperatureMSE', 'VelocityMSE']].max().max()
+
+        graphs = VGroup()
+        grid = Axes(x_range=[0, len(df1), 1], y_range=[0, maxMSE, maxMSE/5.0],
+                    x_length=10, y_length=5, tips=False,
+                    axis_config={"color": interpolate_color(BACKGROUND_COLOR, WHITE, 0.5)},).to_edge(RIGHT)
+        for i in range(0, len(df1), 5):
+            graphs += Text(f'{i}', font_size=very_small_size).rotate(PI/4).move_to(grid.c2p(i, 0)).shift(0.25*DOWN)
+        for i in np.linspace(0, maxMSE, 6):
+            graphs += Text(f'{i:.2e}', font_size=very_small_size).rotate(PI/4).move_to(grid.c2p(0, i)).shift(0.5*LEFT)
+        graphs += grid
+        graphs += Text(r"MSE in T, U, CH4, and CO2", font_size=very_small_size).rotate(PI/2).next_to(grid, LEFT).shift(0.7*LEFT)
+        graphs += Text(r"Trial Index", font_size=very_small_size).next_to(grid, DOWN).shift(0.2*DOWN)
+        self.play(DrawBorderThenFill(graphs))
+
+        def get_stroke(gen, default):
+            return  default if gen == 'GPEI' else WHITE
+
+        def get_stroke_width(gen, default):
+            return  default if gen == 'GPEI' else 1.5
+
+        self.next_slide()
+        t_dots = [Dot(color=DOT_COLOR,
+                      stroke_width=get_stroke_width(df['generation_method'][i], 0),
+                      stroke_color=get_stroke(df['generation_method'][i], DOT_COLOR)
+            ).move_to(grid.c2p(i, j))
+            for i,j in zip(df['trial_index'], df['TemperatureMSE'])]
+        tt = Text(r"Temperature", color=DOT_COLOR, font_size=very_small_size).next_to(grid, UP)
+        tc = VGroup()
+        tc1 = Dot(color=DOT_COLOR,
+                  stroke_width=get_stroke_width('SOBOL', 0),
+                  stroke_color=get_stroke('SOBOL', DOT_COLOR),
+                  fill_opacity=0.0
+        )
+        tc2= Text(r"SOBOL", color=WHITE, font_size=very_small_size).next_to(tc1, RIGHT)
+        tc.add(tc1,tc2)
+        tc.next_to(tt, RIGHT)
+        self.play(AnimationGroup(*[Create(d) for d in t_dots]), Create(tt), Create(tc))
+
+        self.next_slide()
+        u_dots = [Dot(color=GRAPH_COLOR,
+                      stroke_width=get_stroke_width(df['generation_method'][i], 0),
+                      stroke_color=get_stroke(df['generation_method'][i], GRAPH_COLOR)
+            ).move_to(grid.c2p(i, j))
+            for i,j in zip(df['trial_index'], df['VelocityMSE'])]
+        tt = Text(r"Velocity", color=GRAPH_COLOR, font_size=very_small_size).next_to(tt, LEFT)
+        self.play(AnimationGroup(*[Create(d) for d in u_dots]), Create(tt))
+
+        self.next_slide()
+        co2_dots = [Dot(color=GREEN,
+                      stroke_width=get_stroke_width(df['generation_method'][i], 0),
+                      stroke_color=get_stroke(df['generation_method'][i], GREEN)
+            ).move_to(grid.c2p(i, j))
+            for i,j in zip(df['trial_index'], df['CO2MSE'])]
+        tt = Text(r"CO2", color=GREEN, font_size=very_small_size).next_to(tt, LEFT)
+        self.play(AnimationGroup(*[Create(d) for d in co2_dots]), Create(tt))
+
+        self.next_slide()
+        ch4_dots = [Dot(color=ORANGE,
+                      stroke_width=get_stroke_width(df['generation_method'][i], 0),
+                      stroke_color=get_stroke(df['generation_method'][i], ORANGE)
+            ).move_to(grid.c2p(i, j))
+            for i,j in zip(df['trial_index'], df['CH4MSE'])]
+        tt = Text(r"CH4", color=ORANGE, font_size=very_small_size).next_to(tt, LEFT)
+        self.play(AnimationGroup(*[Create(d) for d in ch4_dots]), Create(tt))
+
+        self.next_slide()
+        keep_only_objects(self, layout)
+
+        graphs = VGroup()
+        grid = Axes(x_range=[0, len(df1), 1], y_range=[0, df['ExecutionTime'].max(), df['ExecutionTime'].max()/5.0],
+                    x_length=10, y_length=5, tips=False,
+                    axis_config={"color": interpolate_color(BACKGROUND_COLOR, WHITE, 0.5)},).to_edge(RIGHT)
+        graphs += grid
+        for i in range(0, len(df1), 5):
+            graphs += Text(f'{i}', font_size=very_small_size).rotate(PI/4).move_to(grid.c2p(i, 0)).shift(0.25*DOWN)
+        for i in np.linspace(0, df['ExecutionTime'].max(), 6):
+            graphs += Text(f'{i:.2f}', font_size=very_small_size).rotate(PI/4).move_to(grid.c2p(0, i)).shift(0.5*LEFT)
+        graphs += Text(r"Execution Time", font_size=very_small_size).rotate(PI/2).next_to(grid, LEFT).shift(0.5*LEFT)
+        graphs += Text(r"Trial Index", font_size=very_small_size).next_to(grid, DOWN).shift(0.2*DOWN)
+        self.play(DrawBorderThenFill(graphs))
+        time_dots = [Dot(color=DOT_COLOR,
+                      stroke_width=get_stroke_width(df['generation_method'][i], 0),
+                      stroke_color=get_stroke(df['generation_method'][i], DOT_COLOR)
+            ).move_to(grid.c2p(i, j))
+            for i,j in zip(df['trial_index'], df['ExecutionTime'])]
+        self.play(AnimationGroup(*[Create(d) for d in time_dots]))
+
+        self.next_slide()
+        keep_only_objects(self, layout)
+
         ### SECTION FLAME PARETO
 
-        t6 = Text(f"Sandia Flame D case: Paerto front", font_size=big_size).to_edge(UP+LEFT)
+        t6 = Text(f"Sandia Flame D case: Pareto front", font_size=big_size).to_edge(UP+LEFT)
         self.play(Transform(title, t6))
+
+        df1 = pd.read_csv(f"../{CASE_NAME}_frontier_report.csv")
+        df = df1[~df1.isin([1.0]).any(axis=1)]
+
+        graphs = VGroup()
+        grid = Axes(x_range=[0, df['ExecutionTime'].max(), df['ExecutionTime'].max()/5],
+                    y_range=[0, df['CO2MSE'].max(), df['CO2MSE'].max()/5.0],
+                    x_length=10, y_length=5, tips=False,
+                    axis_config={"color": interpolate_color(BACKGROUND_COLOR, WHITE, 0.5)},).to_edge(RIGHT)
+        graphs += grid
+        for i in np.linspace(0, df['ExecutionTime'].max(), 6):
+            graphs += Text(f'{i:.0f}', font_size=very_small_size).rotate(PI/4).move_to(grid.c2p(i, 0)).shift(0.25*DOWN)
+        for i in np.linspace(0, df['CO2MSE'].max(), 6):
+            graphs += Text(f'{i:.2e}', font_size=very_small_size).rotate(PI/4).move_to(grid.c2p(0, i)).shift(0.5*LEFT)
+        graphs += Text(r"MSE in CO2", font_size=very_small_size).rotate(PI/2).next_to(grid, LEFT).shift(0.5*LEFT)
+        graphs += Text(r"Execution Time", font_size=very_small_size).next_to(grid, DOWN).shift(0.2*DOWN)
+        self.play(DrawBorderThenFill(graphs))
+        front_dots = [Dot(color=DOT_COLOR, radius=0.03).move_to(grid.c2p(i, j))
+            for i,j in zip(df['ExecutionTime'], df['CO2MSE'])]
+        xlines = [Line(start=grid.c2p(i-j, k), end=grid.c2p(i+j, k), color=DOT_COLOR)
+            for i,j,k in zip(df['ExecutionTime'], df['ExecutionTime_sems'], df['CO2MSE'])]
+        ylines = [Line(start=grid.c2p(k, i-j), end=grid.c2p(k, i+j), color=DOT_COLOR)
+            for i,j,k in zip(df['CO2MSE'], df['CO2MSE_sems'], df['ExecutionTime'])]
+        params = [
+            df[['turbulenceModel', 'chemistryMechanism', 'chemistryType', 'combustionModel', 'meshResolution']].loc[i]
+            for i in [2, 15]
+        ]
+        print(params)
+        self.play(AnimationGroup(*[Create(d) for d in front_dots]))
+        self.play(AnimationGroup(*[Create(d) for d in xlines], *[Create(d) for d in ylines]))
+        txts = [[Text(f'{i}: {e[i]}', font_size=very_small_size) for i in e.index] for e in params]
+        self.play(Create(VGroup(*txts[0]).arrange(0.4*DOWN, center=False, aligned_edge=RIGHT).next_to(front_dots[2], RIGHT).shift(0.5*DOWN)))
+        self.play(Create(VGroup(*txts[1]).arrange(0.4*DOWN, center=False, aligned_edge=LEFT).next_to(front_dots[15], LEFT).shift(0.5*UP)))
 
         self.next_slide()
         keep_only_objects(self, layout)
 
         ### SECTION FLAME REL FEATURES
 
+        df = pd.read_csv(f"../{CASE_NAME}_feature_importance_report.csv")
+        maxImportance = df.max()[~df.columns.isin(['objective'])].max()*100
+
         t7 = Text(f"Sandia Flame D case: Rel. importance", font_size=big_size).to_edge(UP+LEFT)
         self.play(Transform(title, t7))
 
-        ### SECTION CONCLUSION
+        graphs = VGroup()
+        grid = Axes(x_range=[0, len(df.columns)-1, 1],
+                    y_range=[0, 50, 10],
+                    x_length=10, y_length=5, tips=False,
+                    axis_config={"color": interpolate_color(BACKGROUND_COLOR, WHITE, 0.5)},).to_edge(RIGHT)
+        graphs += grid
+        for i in range(1, len(df.columns)):
+            graphs += Text(f'{df.columns[i]}', font_size=very_small_size).move_to(grid.c2p(i-0.6, 0)).shift(0.25*DOWN)
+        for i in np.linspace(0, 50, 6):
+            graphs += Text(f'{i:.1f}%', font_size=very_small_size).rotate(PI/4).move_to(grid.c2p(0, i)).shift(0.5*LEFT)
+        graphs += Text(r"Relative importance", font_size=very_small_size).rotate(PI/2).next_to(grid, LEFT).shift(0.5*LEFT)
+        self.play(DrawBorderThenFill(graphs))
+
+
+        cols = [DOT_COLOR, GRAPH_COLOR, GREEN, ORANGE, YELLOW, BLUE]
+        for i in range(len(df)):
+            row = df.loc[i]
+            obj = row['objective']
+            params = row.index[1:]
+            bars = [Polygon(*rect_verts(grid, 0.12*i+j, 0, 0.12, row[params[j]]*100), color=cols[i], fill_opacity=0.5) for j in range(len(params))]
+            tt = Text(f"{obj}", color=cols[i], font_size=very_small_size).align_to(grid, LEFT).shift(3*LEFT+i*0.5*UP)
+            self.play(AnimationGroup(*[DrawBorderThenFill(b) for b in bars]), Create(tt))
+            self.next_slide()
+
+        #### SECTION CONCLUSION
+
+        keep_only_objects(self, layout)
 
         t8 = Text(f"Key takeaways", font_size=big_size).to_edge(UP+LEFT)
         self.play(Transform(title, t8))
