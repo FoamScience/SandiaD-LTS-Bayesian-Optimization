@@ -811,10 +811,10 @@ class Bayes(Slide):
         self.play(DrawBorderThenFill(graphs))
 
         def get_stroke(gen, default):
-            return  default if gen == 'GPEI' else WHITE
+            return  default if gen != 'Sobol' else WHITE
 
         def get_stroke_width(gen, default):
-            return  default if gen == 'GPEI' else 1.5
+            return  default if gen != 'Sobol' else 1.5
 
         self.next_slide()
         t_dots = [Dot(color=DOT_COLOR,
@@ -825,8 +825,8 @@ class Bayes(Slide):
         tt = Text(r"Temperature", color=DOT_COLOR, font_size=very_small_size).next_to(grid, UP)
         tc = VGroup()
         tc1 = Dot(color=DOT_COLOR,
-                  stroke_width=get_stroke_width('SOBOL', 0),
-                  stroke_color=get_stroke('SOBOL', DOT_COLOR),
+                  stroke_width=get_stroke_width('Sobol', 0),
+                  stroke_color=get_stroke('Sobol', DOT_COLOR),
                   fill_opacity=0.0
         )
         tc2= Text(r"SOBOL", color=WHITE, font_size=very_small_size).next_to(tc1, RIGHT)
@@ -917,7 +917,6 @@ class Bayes(Slide):
             df[['turbulenceModel', 'chemistryMechanism', 'chemistryType', 'combustionModel', 'meshResolution']].loc[i]
             for i in [2, 15]
         ]
-        print(params)
         self.play(AnimationGroup(*[Create(d) for d in front_dots]))
         self.play(AnimationGroup(*[Create(d) for d in xlines], *[Create(d) for d in ylines]))
         txts = [[Text(f'{i}: {e[i]}', font_size=very_small_size) for i in e.index] for e in params]
