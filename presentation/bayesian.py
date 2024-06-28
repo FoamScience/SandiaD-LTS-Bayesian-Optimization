@@ -1,6 +1,7 @@
 from manim import *
 from manim_slides import Slide
-from manim.utils.color import Colors, interpolate_color
+from manim.utils import color
+from manim.utils.color import interpolate_color
 from numpy.random import RandomState
 from bayes_opt import BayesianOptimization
 from bayes_opt import UtilityFunction
@@ -8,11 +9,11 @@ import numpy as np
 import pandas as pd
 
 rng = RandomState(0)
-MAIN_COLOR = Colors.teal_a.value
-BACKGROUND_COLOR = Colors.gray_e.value
-TEXT_COLOR = Colors.white.value
-GRAPH_COLOR = Colors.blue_b.value
-DOT_COLOR = Colors.red_c.value
+MAIN_COLOR = color.TEAL_A
+BACKGROUND_COLOR = color.GRAY_E
+TEXT_COLOR = color.WHITE
+GRAPH_COLOR = color.BLUE_B
+DOT_COLOR = color.RED_C
 ITEM_ICON = "•"
 very_small_size = 12.0
 small_size = 16
@@ -442,8 +443,8 @@ class Bayes(Slide):
                     self.play(FadeOut(ce1))
                     ei_area = grid.get_area(ei, x_range=(-200, 200), opacity=0.3, color=[ORANGE, ORANGE])
                     self.play(FadeIn(ei_area))
+            self.next_slide()  # Waits user to press continue to go to the next slide
 
-        self.next_slide()  # Waits user to press continue to go to the next slide
         keep_only_objects(self, layout)
 
         pros = Text("- What's so good about it?", font_size=mid_size).next_to(title, DOWN*2).align_to(title, LEFT)
@@ -922,6 +923,8 @@ class Bayes(Slide):
         txts = [[Text(f'{i}: {e[i]}', font_size=very_small_size) for i in e.index] for e in params]
         self.play(Create(VGroup(*txts[0]).arrange(0.4*DOWN, center=False, aligned_edge=RIGHT).next_to(front_dots[2], RIGHT).shift(0.5*DOWN)))
         self.play(Create(VGroup(*txts[1]).arrange(0.4*DOWN, center=False, aligned_edge=LEFT).next_to(front_dots[15], LEFT).shift(0.5*UP)))
+
+        self.play(Create(Dot(color=DOT_COLOR).move_to(100*LEFT)))
 
         self.next_slide()
         keep_only_objects(self, layout)
