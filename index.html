@@ -1,0 +1,679 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+    <title>Optimization of combustion processes with Bayesian algorithms</title>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.1.0/reveal.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.1.0/theme/black.min.css">
+
+    <!-- Theme used for syntax highlighting of code -->
+    <!-- <link rel="stylesheet" href="lib/css/zenburn.css"> -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/styles/zenburn.min.css">
+
+    <!-- <link rel="stylesheet" href="index.css"> -->
+  <meta name="application-name" content="Optimization of combustion processes with Bayesian algorithms">
+<meta name="subject" content="NHR4CES Machine Learning for combustion workshop, November 2023">
+<meta name="abstract" content="NHR4CES Machine Learning for combustion workshop, November 2023">
+<meta name="twitter:title" content="Optimization of combustion processes with Bayesian algorithms">
+<meta name="description" content="NHR4CES Machine Learning for combustion workshop, November 2023">
+<meta name="twitter:description" content="NHR4CES Machine Learning for combustion workshop, November 2023">
+<meta name="author" content="Mohammed Elwardi Fadeli">
+<meta name="twitter:creator" content="Mohammed Elwardi Fadeli">
+<meta name="url" content="http://foamscience.github.io/SandiaD-LTS-Bayesian-Optimization/">
+<meta name="twitter:url" content="http://foamscience.github.io/SandiaD-LTS-Bayesian-Optimization/">
+<meta name="twitter:image" content="http://foamscience.github.io/SandiaD-LTS-Bayesian-Optimization/thumbnail.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta property="og:title" content="Optimization of combustion processes with Bayesian algorithms">
+<meta property="og:description" content="NHR4CES Machine Learning for combustion workshop, November 2023">
+<meta property="article:author" content="Mohammed Elwardi Fadeli">
+<meta property="og:url" content="http://foamscience.github.io/SandiaD-LTS-Bayesian-Optimization/">
+<meta property="og:image" content="http://foamscience.github.io/SandiaD-LTS-Bayesian-Optimization/thumbnail.png">
+<link rel="canonical" href="http://foamscience.github.io/SandiaD-LTS-Bayesian-Optimization/">
+</head>
+
+  <body>
+    <div class="reveal">
+      <div class="slides"><section
+              data-background-size='contain'
+              data-background-color="#222"
+              data-background-video="Bayes_assets/4e380fe30dc4cccadd237dc9a1105c2ccf98398c1de2062d987c7acbef612f08.mp4"
+              data-background-video-muted>
+              
+            </section><section
+              data-background-size='contain'
+              data-background-color="#222"
+              data-background-video="Bayes_assets/f3e3fde8bc93ae9847d65192695a176dfe504ba818f30d9d5d344c0cfe9ee7cc.mp4"
+              >
+              
+            </section><section
+              data-background-size='contain'
+              data-background-color="#222"
+              data-background-video="Bayes_assets/3c3273e3e007474f51f3ae26d091a65bdce596866d086881a1d6071bba457c53.mp4"
+              >
+              
+            </section><section
+              data-background-size='contain'
+              data-background-color="#222"
+              data-background-video="Bayes_assets/1ddb5ac788ff173b0921507aba4d7ff35838f54d5f970f342311bf215a005239.mp4"
+              >
+              
+            </section><section
+              data-background-size='contain'
+              data-background-color="#222"
+              data-background-video="Bayes_assets/d4b29aa440dbf1882ae1627fc71f7458df849f94ca170b39c72630e2137380b0.mp4"
+              >
+              
+            </section><section
+              data-background-size='contain'
+              data-background-color="#222"
+              data-background-video="Bayes_assets/9c6197a45988c2446e0cfe1dbe6e2d1799db8495fba94c692418b94144e98da3.mp4"
+              >
+              
+            </section><section
+              data-background-size='contain'
+              data-background-color="#222"
+              data-background-video="Bayes_assets/2f76e9c9b46311014427d8f2104a0328658ab21d69e6addd20fcf373d06c1bca.mp4"
+              >
+              
+            </section><section
+              data-background-size='contain'
+              data-background-color="#222"
+              data-background-video="Bayes_assets/70a3f22e9f6f73b99dff0948a5a0a0d645b5a90ea29d91af5a145b6828c3e4bd.mp4"
+              >
+              
+            </section><section
+              data-background-size='contain'
+              data-background-color="#222"
+              data-background-video="Bayes_assets/0a622480d88c3e64363ef00e9d19c6cde70532a7fa9c577cbfc99350d9e0dc94.mp4"
+              >
+              
+            </section><section
+              data-background-size='contain'
+              data-background-color="#222"
+              data-background-video="Bayes_assets/cd89a9dfdbd2faec3f30be5b003f59b7f60e18cbee163f12aaf84203dfd23885.mp4"
+              >
+              
+            </section><section
+              data-background-size='contain'
+              data-background-color="#222"
+              data-background-video="Bayes_assets/a78f730724f9856874581deae2282c734a74b5076ef02e53dc0c9c46c56884e5.mp4"
+              >
+              
+            </section><section
+              data-background-size='contain'
+              data-background-color="#222"
+              data-background-video="Bayes_assets/507f1d2629dac1ad64b4fd095b554c74a5b66bd4afd11d193c5806f2d3fcc7fc.mp4"
+              >
+              
+            </section><section
+              data-background-size='contain'
+              data-background-color="#222"
+              data-background-video="Bayes_assets/eed79fc1d772d3d0e35f053a0ced0e9e78057d62d4a987da5920cb1a69183984.mp4"
+              >
+              
+            </section><section
+              data-background-size='contain'
+              data-background-color="#222"
+              data-background-video="Bayes_assets/6513924087a82a234c45ac9d2a10b8d191a3c17af3012cdfa9cd81cfebf52012.mp4"
+              >
+              
+            </section><section
+              data-background-size='contain'
+              data-background-color="#222"
+              data-background-video="Bayes_assets/9654b22a160b665099770e2adb3a742c35e6eb7627e6f9609fde229f33852fff.mp4"
+              >
+              
+            </section><section
+              data-background-size='contain'
+              data-background-color="#222"
+              data-background-video="Bayes_assets/a89efc27865cd1383ac12e3710ee5f8c32c3795ee0ab6aa81fefc535ad3f0bcb.mp4"
+              >
+              
+            </section><section
+              data-background-size='contain'
+              data-background-color="#222"
+              data-background-video="Bayes_assets/b137ad09cffb0dff17ec017395ae85aa24238fba6825357cf8b4847d2c8d3d91.mp4"
+              >
+              
+            </section><section
+              data-background-size='contain'
+              data-background-color="#222"
+              data-background-video="Bayes_assets/147910306d1cbdffb6b977a99e77743bdad6a728ab5f9b5a9d2fdb3a9adf4981.mp4"
+              >
+              
+            </section><section
+              data-background-size='contain'
+              data-background-color="#222"
+              data-background-video="Bayes_assets/15b1ef811b44e36fbcdf65ec59471708c195aba4fc6fb413a3df5006021e574d.mp4"
+              >
+              
+            </section><section
+              data-background-size='contain'
+              data-background-color="#222"
+              data-background-video="Bayes_assets/2aee2aecb379437fb439d8b8a00f3d4b63d7608280e34cd030141062f8e17169.mp4"
+              >
+              
+            </section><section
+              data-background-size='contain'
+              data-background-color="#222"
+              data-background-video="Bayes_assets/27a59d82d7444ea8418906c37a780dccb4be9e8aefcf739f2339dba5b8ade3e3.mp4"
+              >
+              
+            </section><section
+              data-background-size='contain'
+              data-background-color="#222"
+              data-background-video="Bayes_assets/b6d935a58fea01863f05db26edb161b4dc8bfc54d1e22b0a531ec390e06a2674.mp4"
+              >
+              
+            </section><section
+              data-background-size='contain'
+              data-background-color="#222"
+              data-background-video="Bayes_assets/fa1b51b30ef15da00f0d263f631dffe2ee9f3c17f73f5b587b75ebf9ca8828b4.mp4"
+              >
+              
+            </section><section
+              data-background-size='contain'
+              data-background-color="#222"
+              data-background-video="Bayes_assets/9dd6541aedf6232cccc657abc08c6f3b57fc6f026180570c843d8143f41dcaf5.mp4"
+              >
+              
+            </section><section
+              data-background-size='contain'
+              data-background-color="#222"
+              data-background-video="Bayes_assets/0ddb7b8e933879f47bd91f5e545bbb3e6fa15c204a8c33be37914bcfc11c3435.mp4"
+              >
+              
+            </section><section
+              data-background-size='contain'
+              data-background-color="#222"
+              data-background-video="Bayes_assets/78fc539581e9bd0572ca016a39df206076f1741fa7f1c490b6d78a2b9ad48175.mp4"
+              >
+              
+            </section><section
+              data-background-size='contain'
+              data-background-color="#222"
+              data-background-video="Bayes_assets/ce37018f6b78fd5a87ce516d4cb97b8e370bd54a1fc812b9dbbae30b6523adb4.mp4"
+              >
+              
+            </section><section
+              data-background-size='contain'
+              data-background-color="#222"
+              data-background-video="Bayes_assets/047bbfbab3adc2ea71f354e6a447b4af1c6377e5c48b3fac8d5afc891f9b798a.mp4"
+              >
+              
+            </section><section
+              data-background-size='contain'
+              data-background-color="#222"
+              data-background-video="Bayes_assets/19590b8588ee39628e950d049a66030e3097fae10127d3bcdf8f17fbaa07a7af.mp4"
+              >
+              
+            </section><section
+              data-background-size='contain'
+              data-background-color="#222"
+              data-background-video="Bayes_assets/cd8aeadd60b328d1ccc1aedf0a255d155835c74e2c29a2c885e0151a61566cca.mp4"
+              >
+              
+            </section><section
+              data-background-size='contain'
+              data-background-color="#222"
+              data-background-video="Bayes_assets/72388bdecd53e397fb9fe6f64773bbacb22e5e535a7ca95dae44cf311ece9526.mp4"
+              >
+              
+            </section><section
+              data-background-size='contain'
+              data-background-color="#222"
+              data-background-video="Bayes_assets/eb60a13ce55a73bc4d19703b355d38c2e4d80112c5536073216b470dde8bc0d4.mp4"
+              >
+              
+            </section><section
+              data-background-size='contain'
+              data-background-color="#222"
+              data-background-video="Bayes_assets/dfed33376740907a417cf98c2c692f659cac52d048ab4d1d7fd8777cf992a398.mp4"
+              >
+              
+            </section><section
+              data-background-size='contain'
+              data-background-color="#222"
+              data-background-video="Bayes_assets/b8441aa35d38a944b379e4812a4075ce0e415aba475b9422c17c4e056beeb993.mp4"
+              >
+              
+            </section><section
+              data-background-size='contain'
+              data-background-color="#222"
+              data-background-video="Bayes_assets/34ab046232e14b8aee829dbd202064b782e623656f08e46ebdfe5189f4b77b45.mp4"
+              >
+              
+            </section><section
+              data-background-size='contain'
+              data-background-color="#222"
+              data-background-video="Bayes_assets/eea8feaf7e82507b74c1cc7c0629e487f8e80d676b647dfe8b252e978b658a19.mp4"
+              >
+              
+            </section><section
+              data-background-size='contain'
+              data-background-color="#222"
+              data-background-video="Bayes_assets/4ce3ec4b816d3567e19db40407cd837740ddf416b9ad350d8e958ffe6856a26d.mp4"
+              >
+              
+            </section><section
+              data-background-size='contain'
+              data-background-color="#222"
+              data-background-video="Bayes_assets/fcdcd2ec488ad1bded799bc25864851c554d291b06906ee7ee0f7931f296fe27.mp4"
+              >
+              
+            </section><section
+              data-background-size='contain'
+              data-background-color="#222"
+              data-background-video="Bayes_assets/d1f6b89d6c57cde5dc4e6d31035ff321ddb002b6fcfcf279629643cf3c309836.mp4"
+              >
+              
+            </section><section
+              data-background-size='contain'
+              data-background-color="#222"
+              data-background-video="Bayes_assets/3d5640706ca814538d18c698db3d23d6d282dbe57fc5d5c959fd73e0d01ba62a.mp4"
+              >
+              
+            </section><section
+              data-background-size='contain'
+              data-background-color="#222"
+              data-background-video="Bayes_assets/03a531f0df2232810768ea688796e561298d6e0e1e5f44ad1b20694bd21a8bc5.mp4"
+              >
+              
+            </section><section
+              data-background-size='contain'
+              data-background-color="#222"
+              data-background-video="Bayes_assets/87d6f7827ecf13ab9eeef955b7cacb7de46472772ec70d154df529973d966760.mp4"
+              >
+              
+            </section><section
+              data-background-size='contain'
+              data-background-color="#222"
+              data-background-video="Bayes_assets/e3b8a85429f7026f9a4750c67e557819036a7d0bb373ff0c73c9f8a07ef06779.mp4"
+              >
+              
+            </section><section
+              data-background-size='contain'
+              data-background-color="#222"
+              data-background-video="Bayes_assets/e142f708c3e48a79f9a42fe304667c93608fe6cd25589eec01519cff83d69802.mp4"
+              >
+              
+            </section><section
+              data-background-size='contain'
+              data-background-color="#222"
+              data-background-video="Bayes_assets/112af254a8e015cf405d50a14dcdc4b8abc58dba7b4a8a8931e26f5bf2514997.mp4"
+              >
+              
+            </section><section
+              data-background-size='contain'
+              data-background-color="#222"
+              data-background-video="Bayes_assets/d3798204212cbf2cdc51c09312ba87a99d96d337a5a6e372e6c98e855995f43b.mp4"
+              >
+              
+            </section><section
+              data-background-size='contain'
+              data-background-color="#222"
+              data-background-video="Bayes_assets/846c560858e4c103e122d6c9479085d7fb35c8a64e5a7b1bd1eb0ceae6a6cb34.mp4"
+              >
+              
+            </section><section
+              data-background-size='contain'
+              data-background-color="#222"
+              data-background-video="Bayes_assets/dc300c8279fc112614f5825a4df5e99d777108267a54974e8690e722896de33b.mp4"
+              >
+              
+            </section><section
+              data-background-size='contain'
+              data-background-color="#222"
+              data-background-video="Bayes_assets/b98130a1120767a8484773e98c4ab33afba37e26e15f768d10f3ff0515a3ce87.mp4"
+              >
+              
+            </section><section
+              data-background-size='contain'
+              data-background-color="#222"
+              data-background-video="Bayes_assets/2a1cf1590a274d71da00e27c84e3fb3c6b7556e54a405d62dea69c7fd3b25988.mp4"
+              >
+              
+            </section><section
+              data-background-size='contain'
+              data-background-color="#222"
+              data-background-video="Bayes_assets/da4a5040a7608f553c5495782524edb7865b3a76844a4e3e0e41b19e4882de04.mp4"
+              >
+              
+            </section><section
+              data-background-size='contain'
+              data-background-color="#222"
+              data-background-video="Bayes_assets/d01a59f7e5c70b2e7872e9f59698f184888d5561aaa96d174467c9cd4e05b2c1.mp4"
+              >
+              
+            </section><section
+              data-background-size='contain'
+              data-background-color="#222"
+              data-background-video="Bayes_assets/51d1c8e224a31eb0f52e20107cdbbd02040210b8938b676aa05359a03f4223de.mp4"
+              >
+              
+            </section><section
+              data-background-size='contain'
+              data-background-color="#222"
+              data-background-video="Bayes_assets/79ad7897e88dc9c688a1fa4e670b9c5a20ec0eeec0d1b2f7de19579d905b0e41.mp4"
+              >
+              
+            </section><section
+              data-background-size='contain'
+              data-background-color="#222"
+              data-background-video="Bayes_assets/6098829df08ceee017bd10f04df0f45acb73266f4741053de3c9570d52fa5e74.mp4"
+              >
+              
+            </section><section
+              data-background-size='contain'
+              data-background-color="#222"
+              data-background-video="Bayes_assets/c8b9be359e382ec9906fbbf23a28be985c94f1b434a8cb4605c512b2aafed8a0.mp4"
+              >
+              
+            </section><section
+              data-background-size='contain'
+              data-background-color="#222"
+              data-background-video="Bayes_assets/1bcab8f2364c8924eb666beabc07b05abb46f358be6563ab883d3f3a277f003b.mp4"
+              >
+              
+            </section><section
+              data-background-size='contain'
+              data-background-color="#222"
+              data-background-video="Bayes_assets/8a2e63c9fe1ba49283f8e07a3f046658f0807d0409c37fccef56f314b0c0f960.mp4"
+              >
+              
+            </section><section
+              data-background-size='contain'
+              data-background-color="#222"
+              data-background-video="Bayes_assets/e21d9f7f547f08e4d0ec995214ba132f37f90d1b12144a01b0d8296978e6747c.mp4"
+              >
+              
+            </section><section
+              data-background-size='contain'
+              data-background-color="#222"
+              data-background-video="Bayes_assets/a4314a8bb13a8c2604a0ba4bfe224d7b43060a8f2aefdab94e1d47b566d4d468.mp4"
+              >
+              
+            </section><section
+              data-background-size='contain'
+              data-background-color="#222"
+              data-background-video="Bayes_assets/edf6332de1b70f84cbe462a3944ed13238cb7afb4caf6809841a9f73ec28c312.mp4"
+              >
+              
+            </section><section
+              data-background-size='contain'
+              data-background-color="#222"
+              data-background-video="Bayes_assets/2fd3e8c1e12bfee0f686e42dad4e7aa7f26f2ce681f3ef484ebdf956ed33f3e9.mp4"
+              >
+              
+            </section></div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.1.0/reveal.min.js"></script>
+
+    <!-- To include plugins, see: https://revealjs.com/plugins/ -->
+
+    <!-- <script src="index.js"></script> -->
+    <script>
+      Reveal.initialize({
+        
+        // The "normal" size of the presentation, aspect ratio will
+        // be preserved when the presentation is scaled to fit different
+        // resolutions. Can be specified using percentage units.
+        width: '100%',
+        height: '100%',
+
+        // Factor of the display size that should remain empty around
+        // the content
+        margin: 0.04,
+
+        // Bounds for smallest/largest possible scale to apply to content
+        minScale: 0.2,
+        maxScale: 2.0,
+
+        // Display presentation control arrows
+        controls: true,
+
+        // Help the user learn the controls by providing hints, for example by
+        // bouncing the down arrow when they first encounter a vertical slide
+        controlsTutorial: true,
+
+        // Determines where controls appear, "edges" or "bottom-right"
+        controlsLayout: 'bottom-right',
+
+        // Visibility rule for backwards navigation arrows; "faded", "hidden"
+        // or "visible"
+        controlsBackArrows: 'faded',
+
+        // Display a presentation progress bar
+        progress: true,
+
+        // Display the page number of the current slide
+        // - true:    Show slide number
+        // - false:   Hide slide number
+        //
+        // Can optionally be set as a string that specifies the number formatting:
+        // - "h.v":   Horizontal . vertical slide number (default)
+        // - "h/v":   Horizontal / vertical slide number
+        // - "c":   Flattened slide number
+        // - "c/t":   Flattened slide number / total slides
+        //
+        // Alternatively, you can provide a function that returns the slide
+        // number for the current slide. The function should take in a slide
+        // object and return an array with one string [slideNumber] or
+        // three strings [n1,delimiter,n2]. See #formatSlideNumber().
+        slideNumber: true,
+
+        // Can be used to limit the contexts in which the slide number appears
+        // - "all":      Always show the slide number
+        // - "print":    Only when printing to PDF
+        // - "speaker":  Only in the speaker view
+        showSlideNumber: 'all',
+
+        // Use 1 based indexing for # links to match slide number (default is zero
+        // based)
+        hashOneBasedIndex: false,
+
+        // Add the current slide number to the URL hash so that reloading the
+        // page/copying the URL will return you to the same slide
+        hash: false,
+
+        // Flags if we should monitor the hash and change slides accordingly
+        respondToHashChanges: false,
+
+        // Push each slide change to the browser history.  Implies `hash: true`
+        history: false,
+
+        // Enable keyboard shortcuts for navigation
+        keyboard: true,
+
+        // Optional function that blocks keyboard events when retuning false
+        //
+        // If you set this to 'focused', we will only capture keyboard events
+        // for embedded decks when they are in focus
+        keyboardCondition: null,
+
+        // Disables the default reveal.js slide layout (scaling and centering)
+        // so that you can use custom CSS layout
+        disableLayout: false,
+
+        // Enable the slide overview mode
+        overview: true,
+
+        // Vertical centering of slides
+        center: true,
+
+        // Enables touch navigation on devices with touch input
+        touch: true,
+
+        // Loop the presentation
+        loop: false,
+
+        // Change the presentation direction to be RTL
+        rtl: false,
+
+        // Changes the behavior of our navigation directions.
+        //
+        // "default"
+        // Left/right arrow keys step between horizontal slides, up/down
+        // arrow keys step between vertical slides. Space key steps through
+        // all slides (both horizontal and vertical).
+        //
+        // "linear"
+        // Removes the up/down arrows. Left/right arrows step through all
+        // slides (both horizontal and vertical).
+        //
+        // "grid"
+        // When this is enabled, stepping left/right from a vertical stack
+        // to an adjacent vertical stack will land you at the same vertical
+        // index.
+        //
+        // Consider a deck with six slides ordered in two vertical stacks:
+        // 1.1    2.1
+        // 1.2    2.2
+        // 1.3    2.3
+        //
+        // If you're on slide 1.3 and navigate right, you will normally move
+        // from 1.3 -> 2.1. If "grid" is used, the same navigation takes you
+        // from 1.3 -> 2.3.
+        navigationMode: 'default',
+
+        // Randomizes the order of slides each time the presentation loads
+        shuffle: false,
+
+        // Turns fragments on and off globally
+        fragments: true,
+
+        // Flags whether to include the current fragment in the URL,
+        // so that reloading brings you to the same fragment position
+        fragmentInURL: true,
+
+        // Flags if the presentation is running in an embedded mode,
+        // i.e. contained within a limited portion of the screen
+        embedded: false,
+
+        // Flags if we should show a help overlay when the question-mark
+        // key is pressed
+        help: true,
+
+        // Flags if it should be possible to pause the presentation (blackout)
+        pause: true,
+
+        // Flags if speaker notes should be visible to all viewers
+        showNotes: false,
+
+        // Global override for autolaying embedded media (video/audio/iframe)
+        // - null:   Media will only autoplay if data-autoplay is present
+        // - true:   All media will autoplay, regardless of individual setting
+        // - false:  No media will autoplay, regardless of individual setting
+        autoPlayMedia: null,
+
+        // Global override for preloading lazy-loaded iframes
+        // - null:   Iframes with data-src AND data-preload will be loaded when within
+        //           the viewDistance, iframes with only data-src will be loaded when visible
+        // - true:   All iframes with data-src will be loaded when within the viewDistance
+        // - false:  All iframes with data-src will be loaded only when visible
+        preloadIframes: null,
+
+        // Can be used to globally disable auto-animation
+        autoAnimate: true,
+
+        // Optionally provide a custom element matcher that will be
+        // used to dictate which elements we can animate between.
+        autoAnimateMatcher: null,
+
+        // Default settings for our auto-animate transitions, can be
+        // overridden per-slide or per-element via data arguments
+        autoAnimateEasing: 'ease',
+        autoAnimateDuration: 1.0,
+        autoAnimateUnmatched: true,
+
+        // CSS properties that can be auto-animated. Position & scale
+        // is matched separately so there's no need to include styles
+        // like top/right/bottom/left, width/height or margin.
+        autoAnimateStyles: ['opacity', 'color', 'background-color', 'padding', 'font-size', 'line-height', 'letter-spacing', 'border-width', 'border-color', 'border-radius', 'outline', 'outline-offset'],
+
+        // Controls automatic progression to the next slide
+        // - 0:      Auto-sliding only happens if the data-autoslide HTML attribute
+        //           is present on the current slide or fragment
+        // - 1+:     All slides will progress automatically at the given interval
+        // - false:  No auto-sliding, even if data-autoslide is present
+        autoSlide: 0,
+
+        // Stop auto-sliding after user input
+        autoSlideStoppable: true,
+
+        // Use this method for navigation when auto-sliding (defaults to navigateNext)
+        autoSlideMethod: null,
+
+        // Specify the average time in seconds that you think you will spend
+        // presenting each slide. This is used to show a pacing timer in the
+        // speaker view
+        defaultTiming: null,
+
+        // Enable slide navigation via mouse wheel
+        mouseWheel: false,
+
+        // Opens links in an iframe preview overlay
+        // Add `data-preview-link` and `data-preview-link="false"` to customize each link
+        // individually
+        previewLinks: false,
+
+        // Exposes the reveal.js API through window.postMessage
+        postMessage: true,
+
+        // Dispatches all reveal.js events to the parent window through postMessage
+        postMessageEvents: false,
+
+        // Focuses body when page changes visibility to ensure keyboard shortcuts work
+        focusBodyOnPageVisibilityChange: true,
+
+        // Transition style
+        transition: 'none', // none/fade/slide/convex/concave/zoom
+
+        // Transition speed
+        transitionSpeed: 'default', // default/fast/slow
+
+        // Transition style for full page slide backgrounds
+        backgroundTransition: 'none', // none/fade/slide/convex/concave/zoom
+
+        // The maximum number of pages a single slide can expand onto when printing
+        // to PDF, unlimited by default
+        pdfMaxPagesPerSlide: Number.POSITIVE_INFINITY,
+
+        // Prints each fragment on a separate slide
+        pdfSeparateFragments: true,
+
+        // Offset used to reduce the height of content within exported PDF pages.
+        // This exists to account for environment differences based on how you
+        // print to PDF. CLI printing options, like phantomjs and wkpdf, can end
+        // on precisely the total height of the document whereas in-browser
+        // printing has to end one pixel before.
+        pdfPageHeightOffset: -1,
+
+        // Number of slides away from the current that are visible
+        viewDistance: 3,
+
+        // Number of slides away from the current that are visible on mobile
+        // devices. It is advisable to set this to a lower number than
+        // viewDistance in order to save resources.
+        mobileViewDistance: 2,
+
+        // The display mode that will be used to show slides
+        display: 'block',
+
+        // Hide cursor if inactive
+        hideInactiveCursor: true,
+
+        // Time before the cursor is hidden (in ms)
+        hideCursorTime: 5000
+      });
+
+      
+    </script>
+
+    
+  </body>
+</html>
